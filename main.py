@@ -28,6 +28,13 @@ def send_icmp_packet(ip: str, message: str):
 @click.argument("target", metavar="<target_ip>")
 @click.option("--my-ip", "-m", required=False, help="Vaše IP adresa")
 def main(target_ip: str, my_ip: str| None=None):
+    """
+    Entry point of the program.
+
+    Args:
+        target_ip (str): The IP address of the target computer to communicate with.
+        my_ip (str, optional): Your IP address. Defaults to None.
+    """
     sniff_thread = threading.Thread(target=start_sniffing)
     sniff_thread.daemon = True
     sniff_thread.start()
