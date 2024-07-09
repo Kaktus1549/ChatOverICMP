@@ -19,8 +19,6 @@ pip3 install icmplib prompt_toolkit --break-system-packages
 
 ## Usage
 
-## Usage
-
 To use the `main.py` program, you need to provide the following arguments:
 
 ```
