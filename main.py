@@ -35,7 +35,7 @@ def send_icmp_packet(ip: str, message: str):
         ping(ip, count=1, interval=0.2, timeout=1, payload=bytes(message, "utf-8"), privileged=False)
     elif len(message) == 0:
         return
-    else:
+    elif len(message) >= 60:
         print("Zpráva je moc dlouhá :((")
 @click.command(help="Tento program Vám umožní si povídat s jiným počítačem pomocí pingů! Je potřeba jako argument zadat IP adresu počítače, se kterým si chcete psát.")
 @click.argument("target", metavar="<target_ip>")
