@@ -22,7 +22,7 @@ def icmp_callback(packet: IP):
                     decoded_payload = raw_payload.decode("utf-8")
                     print(f"{packet[IP].src}: {decoded_payload}")
                 except UnicodeDecodeError:
-                    print(f"{packet[IP].src}: {raw_payload}")
+                    pass
                 except Exception as e:
                     print(f"Error: {e}")
 def start_sniffing(my_ip: str| None=None):
