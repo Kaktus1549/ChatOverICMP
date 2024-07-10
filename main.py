@@ -20,6 +20,8 @@ def icmp_callback(packet: IP):
             if len(raw_payload) > 0:
                 try:
                     decoded_payload = raw_payload.decode("utf-8")
+                    if decoded_payload == "abcdefghijklmnopqrstuvwxyabcdefghi":
+                        print(f"Detected ping from windows machine: {packet[IP].src}")
                     print(f"{packet[IP].src}: {decoded_payload}")
                 except UnicodeDecodeError:
                     pass
