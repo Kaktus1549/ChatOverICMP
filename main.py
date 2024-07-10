@@ -18,8 +18,13 @@ def icmp_callback(packet: IP):
         if layer.type == 8:
             raw_payload = packet[ICMP].payload.original
             if len(raw_payload) > 0:
-                decoded_payload = raw_payload.decode("utf-8")
-                print(f"{packet[IP].src}: {decoded_payload}")
+                try:
+                    decoded_payload = raw_payload.decode("utf-8")
+                    print(f"{packet[IP].src}: {decoded_payload}")
+                except UnicodeDecodeError:
+                    print(f"{packet[IP].src}: {raw_payload}")
+                except Exception as e:
+                    print(f"Error: {e}")
 def start_sniffing(my_ip: str| None=None):
     sniff(filter="icmp", prn=icmp_callback, store=0)
 def send_icmp_packet(ip: str, message: str):
