@@ -17,6 +17,8 @@ If you get "externally-managed-enviroment" error, try to install it with `--brea
 pip3 install icmplib prompt_toolkit --break-system-packages
 ```
 
+- On Windows, you need to also install Npcap
+
 ## Usage
 
 To use the `main.py` program, you need to provide the following arguments:
