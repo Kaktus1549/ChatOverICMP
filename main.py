@@ -7,11 +7,12 @@ logging.getLogger("scapy").setLevel(logging.CRITICAL)
 from scapy.all import ICMP, sniff, IP
 import click
 
+host_ip = None
 
 
-def icmp_callback(packet: IP, my_ip: str| None=None):
+def icmp_callback(packet: IP):
     if packet.haslayer(ICMP):
-        if my_ip is not None and packet[IP].src == my_ip:
+        if host_ip is not None and packet[IP].src == host_ip:
             return
         layer = packet.getlayer(ICMP)
         if layer.type == 8:
@@ -27,7 +28,7 @@ def send_icmp_packet(ip: str, message: str):
 @click.command(help="Tento program Vám umožní si povídat s jiným počítačem pomocí pingů! Je potřeba jako argument zadat IP adresu počítače, se kterým si chcete psát.")
 @click.argument("target", metavar="<target_ip>")
 @click.option("--my-ip", "-m", required=False, help="Vaše IP adresa")
-def main(target: str, my_ip: str| None=None):
+def main(target: str, my_ip: str|None=None):
     """
     Entry point of the program.
 
@@ -35,6 +36,9 @@ def main(target: str, my_ip: str| None=None):
         target_ip (str): The IP address of the target computer to communicate with.
         my_ip (str, optional): Your IP address. Defaults to None.
     """
+    global host_ip
+
+    host_ip = my_ip
     sniff_thread = threading.Thread(target=start_sniffing)
     sniff_thread.daemon = True
     sniff_thread.start()
