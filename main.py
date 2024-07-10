@@ -20,14 +20,14 @@ def icmp_callback(packet: IP, my_ip: str| None=None):
                 decoded_payload = raw_payload.decode("utf-8")
                 print(f"{packet[IP].src}: {decoded_payload}")
 def start_sniffing(my_ip: str| None=None):
-    sniff(filter="icmp", prn=icmp_callback(my_ip=my_ip), store=0)
+    sniff(filter="icmp", prn=icmp_callback, store=0)
 def send_icmp_packet(ip: str, message: str):
     ping(ip, count=1, interval=0.2, timeout=1, payload=bytes(message, "utf-8"), privileged=False)
 
 @click.command(help="Tento program Vám umožní si povídat s jiným počítačem pomocí pingů! Je potřeba jako argument zadat IP adresu počítače, se kterým si chcete psát.")
 @click.argument("target", metavar="<target_ip>")
 @click.option("--my-ip", "-m", required=False, help="Vaše IP adresa")
-def main(target_ip: str, my_ip: str| None=None):
+def main(target: str, my_ip: str| None=None):
     """
     Entry point of the program.
 
@@ -44,7 +44,7 @@ def main(target_ip: str, my_ip: str| None=None):
         try:
             while True:
                 message = session.prompt(">> ", is_password=False)
-                send_icmp_packet(target_ip, message)
+                send_icmp_packet(target, message)
         except KeyboardInterrupt:
             print("Exiting...")
         except Exception as e:
