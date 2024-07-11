@@ -6,9 +6,10 @@ import logging
 logging.getLogger("scapy").setLevel(logging.CRITICAL)
 from scapy.all import ICMP, sniff, IP
 import click
+import random
 
 host_ip = None
-
+bad_words = ["kokot", "debil", "idiot", "sračka", "sračko", "sračky", "sračky", "negr", "neggr" "nigga"]
 
 def icmp_callback(packet: IP):
     if packet.haslayer(ICMP):
@@ -33,6 +34,13 @@ def start_sniffing(my_ip: str| None=None):
 def send_icmp_packet(ip: str, message: str):
     if len(message) > 0:
         if len(message) >= 60:
+            if message in bad_words:
+                rand = random.randint(0, 1)
+                if rand == 1:
+                    print("Zpráva obsahuje zakázané slovo womp womp")
+                else:
+                    print("Skill issue bud slysny priste")
+                return
             print("Zpráva je moc dlouhá :((")
             return
         ping(ip, count=1, interval=0.2, timeout=1, payload=bytes(message, "utf-8"), privileged=False)
